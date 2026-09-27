@@ -66,7 +66,7 @@ public:
     // postcondition: elements are written to the stream separated by spaces
     friend ostream& operator<<(ostream& os, const LinkedList<T>&
         list) {
-        Node* traverseP = list.head;
+        const Node* traverseP = list.head;
         while (traverseP != nullptr) {
             os << traverseP->value << " ";
             traverseP = traverseP->next;
