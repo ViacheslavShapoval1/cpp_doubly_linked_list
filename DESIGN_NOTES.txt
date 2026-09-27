@@ -22,10 +22,12 @@ object to the new object, and then sets the source object's pointers to nullptr
  and count to 0. It doesn't allocate any new nodes or touch the internal values.
 
 5. Move-Assignment Operator Description
-The move-assignment operator releases any nodes currently owned by the
-destination list by clearing them, and then transfers ownership of the source
-list's node chain to the destination. It leaves the source list in a valid,
-empty state and does not individually copy or move the stored elements.
+The move-assignment operator utilizes the highly efficient "move-and-swap" idiom. 
+Instead of manually clearing the destination list's nodes, it simply swaps its 
+internal pointers with the source list. This instantly transfers ownership of the 
+new node chain to the destination while pushing the old memory into the temporary 
+source list. When the source list goes out of scope, its destructor automatically 
+and safely cleans up the old nodes.
 
 6. O(1) List Moving Explanation
 Moving an entire linked list operates in O(1) time because the operation only
