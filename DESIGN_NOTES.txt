@@ -1,0 +1,65 @@
+1. Author
+Viacheslav Shapoval
+
+2. Program Description
+This program implements a generic, templated doubly linked list.
+It features dynamic memory management, deep copying, exception safety via
+the copy-and-swap idiom, and highly optimized O(min(index, n - index))
+traversal for positional operations.
+
+3. Compilation Instructions
+Compile the program and use the following command:
+g++ -std=c++11 -Wall -Wextra -Wpedantic -Wconversion -fsanitize=address,
+undefined -fno-omit-frame-pointer main.cpp -o linkedlist
+
+Run the executable:
+./linkedlist
+
+4. Move Constructor Description
+The move constructor transfers ownership of an existing list's node chain to
+a new list object. It assigns the head, tail, and elementCount from the source
+object to the new object, and then sets the source object's pointers to nullptr
+ and count to 0. It doesn't allocate any new nodes or touch the internal values.
+
+5. Move-Assignment Operator Description
+The move-assignment operator releases any nodes currently owned by the
+destination list by clearing them, and then transfers ownership of the source
+list's node chain to the destination. It leaves the source list in a valid,
+empty state and does not individually copy or move the stored elements.
+
+6. O(1) List Moving Explanation
+Moving an entire linked list operates in O(1) time because the operation only
+ involves reassigning three member variables (the head pointer, tail pointer,
+ and element count). The node chain itself remains untouched in memory,
+ completely bypassing the need to iterate through or allocate individual nodes.
+
+7. Time Complexity of Public Operations
+- Default Constructor: O(1)
+- Destructor: O(n)
+- Copy Constructor: O(n)
+- Copy-Assignment: O(n)
+- Move Constructor: O(1)
+- Move-Assignment: O(n) to destroy existing nodes, O(1) for the transfer
+- pushFront / pushBack: O(1)
+- popFront / popBack: O(1)
+- front / back: O(1)
+- at (const & non-const): O(min(index, n - index))
+- insert (lvalue & rvalue): O(min(index, n - index))
+- erase: O(min(index, n - index))
+- clear: O(n)
+- swap: O(1)
+- empty / size: O(1)
+- print: O(n)
+
+8. Testing Strategy
+The main.cpp test driver utilizes a systematic, macro-driven evaluation
+ structure to run 22 distinct assertions. It verifies boundary conditions
+ (front, back, middle), exception throwing for out-of-bounds queries, and
+ deep-copy independence. A custom MoveTracker class equipped with static
+ counters mathematically verifies that memory managers invoke constant-time
+ pointer pilfering without triggering deep copies or individual element moves
+ during O(1) ownership transfers.
+
+10. Known Defects
+There are no known defects, memory leaks, or incomplete requirements.
+All list invariants are maintained and AddressSanitizer reports zero errors.
